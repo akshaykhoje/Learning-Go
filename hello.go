@@ -4,17 +4,18 @@ import "fmt"     // formatted I/O
 
 // main function is the first function to be called when program is executed
 func main() {
-	fmt.Println("Hello, World!") 
-
+	HelloWorld()
 	// variables()
 	// types()
 	// loop()
 	// arrays()
 	// maps()
 	// pointers()
-	structs()
 }
 
+func HelloWorld(){
+	fmt.Println("Hello, World!")
+}
 
 
 func variables(){
