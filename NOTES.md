@@ -23,14 +23,31 @@ import "fmt"
 
 - Go is a **statically typed** language. Thus you need to tell the Go compiler the data type during a variable declaration. However, if the assignment is done on the same line of declaration, Go compiler can detect and assign the data type on its own.
 
-Why that?
--> Explicit type declaration ensure more robust code and reduces the likelihood of errors. It also helps developers to catch mismatches sooner(at compile time). 
+	Why that?
+	-> Explicit type declaration ensure more robust code and reduces the likelihood of errors. It also helps developers to catch mismatches sooner(at compile time). 
 
-```
-const conferenceName = "Go Conference"
+	```
+	const conferenceName = "Go Conference"
 
-var userName string
-userName = "Tom"
-```
+	var userName string
+	userName = "Tom"
+	```
 
 > A big advantage of Go is that **errors** are detected **during compile time** rather than runtime as against many other programming languages.
+
+- Arrays in Golang cannot contain multipe data types. It can store only a single data type.
+
+	*An array of 10 string elements of which first 3 elements are declared right away.*	
+	```
+	var names = [10]string{"john", "alice", "bob"}
+	```
+
+- **Slices are dynamic arrays!**
+```
+// var bookings []string
+// var bookings = []string{}
+bookings := []string{}
+bookings = append(bookings, thing_to_append)
+
+fmt.Printf(bookings[0]) // accessing the values from slice is the same as static arrays
+```
