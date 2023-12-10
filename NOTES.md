@@ -1,5 +1,7 @@
 # Maintaining all notes here from Nana's teachings and others
 
+# Self-task : Try rewriting this code using a different data structure.
+
 - All our code must belong to go package. Go programs are organized into packages.
 package main
 	```
@@ -51,3 +53,5 @@ bookings = append(bookings, thing_to_append)
 
 fmt.Printf(bookings[0]) // accessing the values from slice is the same as static arrays
 ```
+
+### In Golang, you can return as many number of variables from a function as you want.
