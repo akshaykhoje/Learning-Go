@@ -55,3 +55,29 @@ fmt.Printf(bookings[0]) // accessing the values from slice is the same as static
 ```
 
 ### In Golang, you can return as many number of variables from a function as you want.
+
+> Variables and functions defined outside any function can be accessed in all other files within the same package
+
+Run all the files in the current folder as 
+```
+go run .
+```
+
+`Packages in Go are a way to logically group your code.`
+- To do this, create a folder of the same name as the package (e.g. helper/ here for helper.go). Then explicitly import that package in the main package in order to use its contents.
+
+- The `go.mod` file that we initialized at the beginning is the import path for all our packages.
+- So to include the helper module in the main package, we have to mention `**booking-app/helper**` in the import section in the main package.
+- To use the validateUserInput function in the helper module, we only need to capitalize it as `**ValidateUserInput**`. This exports the function and makes it available for other modules in the package trying to import this module.
+- In the importing module, access this function as follows:
+```
+helper.ValidateUserInput()
+```
+
+- Also by capitalizing a variable name, it can be exported to other modules within a package.
+
+
+### Variable scope:
+1. Local level (declared within a loop)
+2. Package level (can be used anywhere within the package)
+3. Global level (can be used across packages writtne in Capital Case like MyVariable)
