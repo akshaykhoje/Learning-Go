@@ -81,3 +81,7 @@ helper.ValidateUserInput()
 1. Local level (declared within a loop)
 2. Package level (can be used anywhere within the package)
 3. Global level (can be used across packages writtne in Capital Case like MyVariable)
+
+### Maps in GO
+
+var map1 = map[string]string // map[keyType]valueType

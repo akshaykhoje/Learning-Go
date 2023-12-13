@@ -3,14 +3,14 @@ package main
 import (
 	"booking-app/helper"
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 func main() {
 	conferenceName := "Go Conference"
 	const conferenceTickets = 50
 	var reaminingTickets uint = conferenceTickets
-	var bookings []string
+	var bookings = make([]map[string]string, 0) // empty list of maps
 
 	greetUsers(conferenceName, conferenceTickets, reaminingTickets)
 
@@ -22,8 +22,8 @@ func main() {
 		if isValidName && isValidEmail && isValidUserTickets {
 			bookings, reaminingTickets := bookTickets(&reaminingTickets, &userTickets, &bookings, firstName, lastName, email, conferenceName)
 
-			firstNames := getFirstNames(bookings)
-			fmt.Printf("The first names of bookings are : %v\n", firstNames)
+			userNames := getUserNames(bookings)
+			fmt.Printf("The usernames of bookings are : %v\n", userNames)
 
 			if reaminingTickets == 0 {
 				fmt.Println("Our conference is booked out. Come back next year.")
@@ -52,14 +52,18 @@ func greetUsers(confName string, confTickets int, remTickets uint) {
 	fmt.Println("Get your tickets here to attend")
 }
 
-func getFirstNames(bookings []string) []string {
-	firstNames := []string{} // collect firstNames to this slice
-	// In Go, '_' are used to identify unused variables
+func getUserNames(bookings []map[string]string) []string {
+	userNames := []string{}
 	for _, booking := range bookings {
-		var names = strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+		var fname string = booking["firstName"]
+		var lname string = booking["lastName"]
+		if len(userNames) != 0 {
+			userNames = append(userNames, "\b, "+fname+" "+lname)
+		} else {
+			userNames = append(userNames, fname+" "+lname)
+		}
 	}
-	return firstNames
+	return userNames
 }
 
 func getUserInput() (string, string, string, uint) {
@@ -83,9 +87,17 @@ func getUserInput() (string, string, string, uint) {
 	return firstName, lastName, email, userTickets
 }
 
-func bookTickets(reaminingTickets *uint, userTickets *uint, bookings *[]string, firstName string, lastName string, email string, conferenceName string) ([]string, uint) {
+func bookTickets(reaminingTickets *uint, userTickets *uint, bookings *[]map[string]string, firstName string, lastName string, email string, conferenceName string) ([]map[string]string, uint) {
+
+	// create a map for a user
+	var userData = make(map[string]string)
+	userData["firstName"] = firstName
+	userData["lastName"] = lastName
+	userData["email"] = email
+	userData["numberOfTickets"] = strconv.FormatUint(uint64(*userTickets), 10)
+
 	*reaminingTickets = *reaminingTickets - *userTickets
-	*bookings = append(*bookings, firstName+" "+lastName)
+	*bookings = append(*bookings, userData)
 
 	fmt.Printf("Thank you %v %v for booking %v tickets. You will get the confirmation at %v\n", firstName, lastName, *userTickets, email)
 	fmt.Printf("%v tickets remaining for %v\n", *reaminingTickets, conferenceName)
