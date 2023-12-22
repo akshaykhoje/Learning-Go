@@ -4,8 +4,11 @@ import (
 	"booking-app/helper"
 	"fmt"
 	"strconv"
+	"sync"
 	"time"
 )
+
+var wg = sync.WaitGroup{}
 
 func main() {
 	conferenceName := "Go Conference"
@@ -15,38 +18,37 @@ func main() {
 
 	greetUsers(conferenceName, conferenceTickets, reaminingTickets)
 
-	for {
-		firstName, lastName, email, userTickets := getUserInput()
+	firstName, lastName, email, userTickets := getUserInput()
 
-		isValidName, isValidEmail, isValidUserTickets := helper.ValidateUserInput(firstName, lastName, email, userTickets, reaminingTickets)
+	isValidName, isValidEmail, isValidUserTickets := helper.ValidateUserInput(firstName, lastName, email, userTickets, reaminingTickets)
 
-		if isValidName && isValidEmail && isValidUserTickets {
-			bookings, reaminingTickets := bookTickets(&reaminingTickets, &userTickets, &bookings, firstName, lastName, email, conferenceName)
+	if isValidName && isValidEmail && isValidUserTickets {
+		bookings, reaminingTickets := bookTickets(&reaminingTickets, &userTickets, &bookings, firstName, lastName, email, conferenceName)
 
-			go sendTicket(userTickets, firstName, lastName, email) // introducing a go keyword handles to concurrency
+		wg.Add(1)
+		go sendTicket(userTickets, firstName, lastName, email) // introducing a go keyword handles to concurrency
 
-			userNames := getUserNames(bookings)
-			fmt.Printf("The usernames of bookings are : %v\n", userNames)
+		userNames := getUserNames(bookings)
+		fmt.Printf("The usernames of bookings are : %v\n", userNames)
 
-			if reaminingTickets == 0 {
-				fmt.Println("Our conference is booked out. Come back next year.")
-				break
-			}
+		if reaminingTickets == 0 {
+			fmt.Println("Our conference is booked out. Come back next year.")
+			// break
+		}
+	} else {
+		if !isValidName {
+			fmt.Println("FirstName and LastName must contain at least 2 characters")
+		}
+		if !isValidEmail {
+			fmt.Println("Email must contain '@'")
+		}
+		if !isValidUserTickets {
+			fmt.Printf("Available number of tickets : %v. Enter data again to get these many tickets.\n", reaminingTickets)
 		} else {
-			if !isValidName {
-				fmt.Println("FirstName and LastName must contain at least 2 characters")
-			}
-			if !isValidEmail {
-				fmt.Println("Email must contain '@'")
-			}
-			if !isValidUserTickets {
-				fmt.Printf("Available number of tickets : %v. Enter data again to get these many tickets.\n", reaminingTickets)
-			} else {
-				fmt.Println("Invalid input. Please check again")
-			}
+			fmt.Println("Invalid input. Please check again")
 		}
 	}
-
+	wg.Wait()
 }
 
 func greetUsers(confName string, confTickets int, remTickets uint) {
@@ -114,4 +116,5 @@ func sendTicket(userTickets uint, firstName string, lastName string, email strin
 	fmt.Println("##############")
 	fmt.Printf("Sending ticket:\n %v to \nemail address %v\n", ticket, email)
 	fmt.Println("##############")
+	wg.Done()
 }
