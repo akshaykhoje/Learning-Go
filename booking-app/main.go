@@ -22,7 +22,8 @@ func main() {
 
 		if isValidName && isValidEmail && isValidUserTickets {
 			bookings, reaminingTickets := bookTickets(&reaminingTickets, &userTickets, &bookings, firstName, lastName, email, conferenceName)
-			sendTicket(userTickets, firstName, lastName, email)
+
+			go sendTicket(userTickets, firstName, lastName, email) // introducing a go keyword handles to concurrency
 
 			userNames := getUserNames(bookings)
 			fmt.Printf("The usernames of bookings are : %v\n", userNames)
