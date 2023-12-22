@@ -4,6 +4,7 @@ import (
 	"booking-app/helper"
 	"fmt"
 	"strconv"
+	"time"
 )
 
 func main() {
@@ -21,6 +22,7 @@ func main() {
 
 		if isValidName && isValidEmail && isValidUserTickets {
 			bookings, reaminingTickets := bookTickets(&reaminingTickets, &userTickets, &bookings, firstName, lastName, email, conferenceName)
+			sendTicket(userTickets, firstName, lastName, email)
 
 			userNames := getUserNames(bookings)
 			fmt.Printf("The usernames of bookings are : %v\n", userNames)
@@ -103,4 +105,12 @@ func bookTickets(reaminingTickets *uint, userTickets *uint, bookings *[]map[stri
 	fmt.Printf("%v tickets remaining for %v\n", *reaminingTickets, conferenceName)
 
 	return *bookings, *reaminingTickets
+}
+
+func sendTicket(userTickets uint, firstName string, lastName string, email string) {
+	time.Sleep(5 * time.Second)
+	var ticket = fmt.Sprintf("%v tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("##############")
+	fmt.Printf("Sending ticket:\n %v to \nemail address %v\n", ticket, email)
+	fmt.Println("##############")
 }
