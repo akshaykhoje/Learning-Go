@@ -1,3 +1,4 @@
+// Implementation of Stack ADT
 package main
 
 import "fmt"

@@ -1,17 +1,23 @@
 package main       //for standalone executable
+// A standalone executable means that the Go compiler embeds all of the necessary code(including dependencies, libraries and the Go runtime) directly into the resulting binary file.
 
-import "fmt"     // formatted I/O
+
+import (
+	"fmt"     // formatted I/O library
+	"strings"
+)
 
 // main function is the first function to be called when program is executed
 func main() {
-	HelloWorld()
+	// HelloWorld()
 	// variables()
 	// types()
 	// loop()
 	// arrays()
 	// maps()
-	// pointers()
+	pointers()
 }
+
 
 func HelloWorld(){
 	fmt.Println("Hello, World!")
@@ -43,8 +49,6 @@ func variables(){
 }
 
 
-
-
 // Go offers a rich collection of types, including numericas, booleans, strings, error, and the ability to create custom types.
 func types(){
 	/* User specified types */
@@ -65,12 +69,11 @@ func types(){
 }
 
 
-
 func loop(){
 	var loop_type int
 	
-	fmt.Println("Loop type:\n1. For loop\n2.While loop\n")
-	fmt.Println("Make choice (1 or 2) :")
+	fmt.Println("Loop type:\n1. For loop\n2.While-like loop\n3. Range-based loop\n")
+	fmt.Println("Make choice (1 or 2 or 3) :")
 	fmt.Scan(&loop_type)
 
 	switch loop_type{
@@ -82,8 +85,13 @@ func loop(){
 	case 2:
 		i := 0
 		for i < 10 {
-			fmt.Println("While uses for,.... :)")
+			fmt.Println("While-like uses for,.... :)")
 			i++
+		}
+	case 3:
+		numbers := []int{1,2,3,4,5}
+		for index,value := range numbers {
+			fmt.Println("Index : ", index, "Value : ", value*10)
 		}
 	default:
 		fmt.Println("It's the default case :(")
@@ -109,8 +117,8 @@ func arrays(){
 	anime_list := [8]string{"classroom of the elites", "death note", "Attack on Titans", "The Promised Neverland", "Spy-X Family", "Fullmetal Alchemist", "Tokyo Ghoul", "Code Geass"}
 
 	seen := anime_list[0:5]
-
-	fmt.Printf("\nseen anime : %v\n", seen)
+	result := strings.Join(seen, ", ")
+	fmt.Printf("\nanime list : %v\n", result)
 }
 
 
@@ -132,9 +140,11 @@ func maps(){
 func pointers(){
 	var ptr *int     // declare pointer to an int
 	num := 19
+	num2 := 20
 	ptr = &num
 	value := *ptr
 
 	fmt.Printf("Address of num : %v\n", ptr)
 	fmt.Printf("Value of num : %v\n", value)
+	fmt.Printf("Value of num2 : %v\n", num2)
 }
